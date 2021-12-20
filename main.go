@@ -1,6 +1,6 @@
 package main
 
-//go:generate ./generator template/hello.go.tmpl schema.json
+//go:generate go run ./generator ./template/hello.go.tmpl ./helper.go ./schema.json
 func main() {
-	HelloFunc()
+
 }

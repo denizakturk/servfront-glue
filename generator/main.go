@@ -5,30 +5,37 @@ import (
 	"encoding/json"
 	"fmt"
 	"go/format"
-	"html/template"
+	"io/ioutil"
 	"os"
 	"path"
 	"regexp"
 	"strings"
+	"text/template"
 )
 
 func main() {
-	fmt.Println("asdasddsa")
+	var parameters interface{}
 	tmeplatePath := os.Args[1]
 	outputPath := os.Args[2]
 	schemaFile := os.Args[3]
-	template := parseTemplate(tmeplatePath)
-	generateByteCode := bytes.Buffer{}
-	var parameters interface
+
+	tmpl := parseTemplate(tmeplatePath)
 
 	jsonFile, err := os.Open(schemaFile)
+	if nil != err {
+		panic(err)
+	}
 	defer jsonFile.Close()
 
-	json.Unmarshal(jsonFile, parameters)
+	jsonString, _ := ioutil.ReadAll(jsonFile)
 
-	template.ExecuteTemplate(template, generateByteCode, parameters)
+	json.Unmarshal(jsonString, &parameters)
 
-	outputTemplate()
+	generateByteCode := execTemplate(tmpl, parameters)
+
+	outputTemplate(outputPath, generateByteCode)
+
+	return
 }
 
 func parseTemplate(templatePath string) *template.Template {
@@ -41,8 +48,8 @@ func parseTemplate(templatePath string) *template.Template {
 	return tmpl
 }
 
-func execTemplate(template *template.Template, templateOutput *bytes.Buffer, templateParameters interface{}) {
-
+func execTemplate(template *template.Template, templateParameters interface{}) []byte {
+	templateOutput := &bytes.Buffer{}
 	err := template.Execute(templateOutput, templateParameters)
 	if nil != err {
 		fmt.Println(err)
@@ -56,8 +63,7 @@ func execTemplate(template *template.Template, templateOutput *bytes.Buffer, tem
 	} else {
 		outputTemplate = formatedTemplate
 	}
-	templateOutput.Reset()
-	templateOutput.Write(outputTemplate)
+	return outputTemplate
 }
 
 func outputTemplate(outputPath string, byteCode []byte) {
