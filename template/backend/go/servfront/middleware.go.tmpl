@@ -1,0 +1,37 @@
+package middleware
+
+import (
+	"net/http"
+	"github.com/denizakturk/servfront/bridge"
+)
+
+type ControllerMiddleware struct {
+	response  http.ResponseWriter
+	request   *http.Request
+	urlParams *bridge.UrlParams
+}
+
+func (cm *ControllerMiddleware) MiddleWare(w http.ResponseWriter, r *http.Request, urlParams *bridge.UrlParams) {
+	// Middleware codes for between service and controller
+	cm.response = w
+	cm.request = r
+	cm.urlParams = urlParams
+}
+
+func (cm *ControllerMiddleware) EndpointRunner(method func() *bridge.ServiceResponse) {
+	// Controller method run and write response
+	response := method()
+	cm.response.Write(nil)
+	response.WriteResponse(cm.response, nil)
+}
+
+func (cm *ControllerMiddleware) GetUrlParam(key string) *string {
+	if nil == cm.urlParams {
+		return nil
+	}
+	if val, ok := cm.urlParams.Params[key]; ok {
+		return &val
+	}
+
+	return nil
+}

@@ -1,0 +1,17 @@
+package controller
+
+import (
+	"microservice/middleware"
+
+	"github.com/denizakturk/servfront/bridge"
+)
+
+type {{.ControllerName}} struct {
+	middleware.ControllerMiddleware
+}
+
+func (c *{{.ControllerName}}) {{.MethodName}}() *bridge.ServiceResponse {
+	response := &bridge.ServiceResponse{}
+
+	return response
+}
