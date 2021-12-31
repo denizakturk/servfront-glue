@@ -1,0 +1,13 @@
+import {NextApiRequest, NextApiResponse} from 'next'
+
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+    if (req.method == "POST") {
+        let request: {{.ModelName}}
+        request = new {{.ModelName}}(req.body)
+        /* Write call service codes ... */
+        let redirect: string = ""
+        /* Write redirect codes ... */
+        res.writeHead(302, {Location: redirect}).end()
+        return;
+    }
+}

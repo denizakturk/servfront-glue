@@ -9,9 +9,19 @@ import (
 type {{.ControllerName}} struct {
 	middleware.ControllerMiddleware
 }
-
-func (c *{{.ControllerName}}) {{.MethodName}}() *bridge.ServiceResponse {
+{{$methods := .Method}}
+{{$controllerName := .ControllerName}}
+{{range $method := $methods}}
+func (c *{{$controllerName}}) {{$method.Name}}() *bridge.ServiceResponse {
 	response := &bridge.ServiceResponse{}
+	{{if ne $method.RequestModelName ""}}
+	request := &model.{{$method.RequestModelName}}
+	{{end}}
+	{{if ne $method.ResponseModelName ""}}
+	responseModel := &model.{{$method.ResponseModelName}}
+	{{end}}
 
+	response.Data = responseModel
 	return response
 }
+{{end}}

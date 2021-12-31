@@ -48,7 +48,7 @@ func OutputTemplate(outputPath string, byteCode []byte) {
 var matchFirstCap = regexp.MustCompile("(.)([A-Z][a-z]+)")
 var matchAllCap = regexp.MustCompile("([a-z0-9])([A-Z])")
 
-func to_snake_case(str string) string {
+func To_snake_case(str string) string {
 	snake := matchFirstCap.ReplaceAllString(str, "${1}_${2}")
 	snake = matchAllCap.ReplaceAllString(snake, "${1}_${2}")
 	return strings.ToLower(snake)
@@ -57,15 +57,21 @@ func to_snake_case(str string) string {
 func GetTemplateFuncMap() template.FuncMap {
 	funcMap := template.FuncMap{
 		"ToLower":   strings.ToLower,
-		"SnakeCase": to_snake_case,
+		"SnakeCase": To_snake_case,
 	}
 
 	return funcMap
 }
 
-func GenerateFromTemplate(templatePath, outputPath, schemaFile string) {
+func GenerateFromTemplate(templatePath string, outputPath string, parameters interface{}) {
 	tmpl := ParseTemplate(templatePath)
 
+	generateByteCode := ExecTemplate(tmpl, parameters)
+
+	OutputTemplate(outputPath, generateByteCode)
+}
+
+func SchemaFileToParameter(schemaFile string) interface{} {
 	jsonFile, err := os.Open(schemaFile)
 	if nil != err {
 		panic(err)
@@ -76,7 +82,5 @@ func GenerateFromTemplate(templatePath, outputPath, schemaFile string) {
 	var parameters interface{}
 	json.Unmarshal(jsonString, &parameters)
 
-	generateByteCode := ExecTemplate(tmpl, parameters)
-
-	OutputTemplate(outputPath, generateByteCode)
+	return parameters
 }
