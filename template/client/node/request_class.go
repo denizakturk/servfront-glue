@@ -1,0 +1,2 @@
+package node
+const REQUEST_CLASS_TEMPLATE string = "{{$Fields := .Fields}}\n{{$modelName := .Name}}\nexport class {{$modelName}} {\n    {{range $field := $Fields}}\n        {{$field.Name}}: {{$field.Type}}\n    {{end}}\n\n    constructor(data: any) {\n    {{range $field := $Fields}}\n    this.{{$field.Name}} = data?.{{$field.Name}} ?? null\n    {{end}}\n    }\n}"

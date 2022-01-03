@@ -11,6 +11,7 @@ import (
 	"github.com/denizakturk/servfront-glue/autogen/model"
 	"github.com/denizakturk/servfront-glue/codegen"
 	"github.com/denizakturk/servfront-glue/template/backend/go/servfront"
+	"github.com/denizakturk/servfront-glue/template/client/node"
 )
 
 const SCHEMA_FILENAME = "schame.json"
@@ -49,7 +50,8 @@ func main() {
 			}
 
 			modelParam.Fields = fields
-			codegen.GenerateFromTemplate("./../template/backend/go/servfront/model.go.tmpl", "./model/"+modelFileName+".go", modelParam)
+
+			codegen.GenerateFromTemplate(servfront.MODEL_TEMPLATE, "./model/"+modelFileName+".go", modelParam)
 		}
 	}
 
@@ -57,7 +59,7 @@ func main() {
 	os.Mkdir("./middleware", os.ModePerm)
 	if _, err := os.Stat("./middleware/middleware.go"); errors.Is(err, os.ErrNotExist) {
 		// Generate Middleware
-		codegen.GenerateFromTemplate("./../template/backend/go/servfront/middleware.go.tmpl", "./middleware/middleware.go", nil)
+		codegen.GenerateFromTemplate(servfront.MIDDLEWARE_TEMPLATE, "./middleware/middleware.go", nil)
 	}
 
 	// Controller
@@ -70,7 +72,7 @@ func main() {
 			controllerParams.Method = append(controllerParams.Method, method)
 		}
 		// Generate Controller
-		codegen.GenerateFromTemplate("./../template/backend/go/servfront/controller.go.tmpl", "./controller/"+controllerFileName+".go", controllerParams)
+		codegen.GenerateFromTemplate(servfront.CONTROLLER_TEMPLATE, "./controller/"+controllerFileName+".go", controllerParams)
 	}
 
 	// Frontend Models
@@ -89,9 +91,9 @@ func main() {
 						}
 						modelParam.Fields = fields
 						if methodVal.RequestModelName == val.Name {
-							codegen.GenerateFromTemplate("./../template/client/node/request_class.ts.tmpl", "./frontend/"+frontendModelFile+".ts", modelParam)
+							codegen.GenerateFromTemplate(node.REQUEST_CLASS_TEMPLATE, "./frontend/"+frontendModelFile+".ts", modelParam)
 						} else {
-							codegen.GenerateFromTemplate("./../template/client/node/response_interface.ts.tmpl", "./frontend/"+frontendModelFile+".ts", modelParam)
+							codegen.GenerateFromTemplate(node.RESPONSE_INTERFACE_TEMPLATE, "./frontend/"+frontendModelFile+".ts", modelParam)
 						}
 					}
 				}

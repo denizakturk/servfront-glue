@@ -1,0 +1,2 @@
+package node
+const API_TEMPLATE string = "import {NextApiRequest, NextApiResponse} from 'next'\n\nexport default async (req: NextApiRequest, res: NextApiResponse) => {\n    if (req.method == \"POST\") {\n        let request: {{.ModelName}}\n        request = new {{.ModelName}}(req.body)\n        /* Write call service codes ... */\n        let redirect: string = \"\"\n        /* Write redirect codes ... */\n        res.writeHead(302, {Location: redirect}).end()\n        return;\n    }\n}"

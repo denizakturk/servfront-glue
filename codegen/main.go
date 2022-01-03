@@ -16,7 +16,7 @@ import (
 func ParseTemplate(templatePath string) *template.Template {
 	tmpl := template.New(path.Base(templatePath))
 	tmpl.Funcs(GetTemplateFuncMap())
-	tmpl, tmplErr := tmpl.ParseFiles(templatePath)
+	tmpl, tmplErr := tmpl.Parse(templatePath)
 	if nil != tmplErr {
 		fmt.Println(tmplErr)
 	}

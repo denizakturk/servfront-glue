@@ -1,0 +1,2 @@
+package node
+const RESPONSE_INTERFACE_TEMPLATE = "{{$modelName := .Name}}\n{{$fields := .Fields}}\nexport interface {{$modelName}} {\n    {{range $field := $fields}}\n    {{$field.Name}}: {{$field.Type}}\n    {{end}}\n}"
