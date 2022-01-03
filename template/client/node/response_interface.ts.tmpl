@@ -1,7 +1,0 @@
-{{$modelName := .Name}}
-{{$fields := .Fields}}
-export interface {{$modelName}} {
-    {{range $field := $fields}}
-    {{$field.Name}}: {{$field.Type}}
-    {{end}}
-}

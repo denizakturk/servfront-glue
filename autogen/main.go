@@ -51,7 +51,7 @@ func main() {
 
 			modelParam.Fields = fields
 
-			codegen.GenerateFromTemplate(servfront.MODEL_TEMPLATE, "./model/"+modelFileName+".go", modelParam)
+			codegen.GenerateFromStringTemplate(servfront.MODEL_TEMPLATE, "./model/"+modelFileName+".go", modelParam)
 		}
 	}
 
@@ -59,7 +59,7 @@ func main() {
 	os.Mkdir("./middleware", os.ModePerm)
 	if _, err := os.Stat("./middleware/middleware.go"); errors.Is(err, os.ErrNotExist) {
 		// Generate Middleware
-		codegen.GenerateFromTemplate(servfront.MIDDLEWARE_TEMPLATE, "./middleware/middleware.go", nil)
+		codegen.GenerateFromStringTemplate(servfront.MIDDLEWARE_TEMPLATE, "./middleware/middleware.go", nil)
 	}
 
 	// Controller
@@ -72,7 +72,7 @@ func main() {
 			controllerParams.Method = append(controllerParams.Method, method)
 		}
 		// Generate Controller
-		codegen.GenerateFromTemplate(servfront.CONTROLLER_TEMPLATE, "./controller/"+controllerFileName+".go", controllerParams)
+		codegen.GenerateFromStringTemplate(servfront.CONTROLLER_TEMPLATE, "./controller/"+controllerFileName+".go", controllerParams)
 	}
 
 	// Frontend Models
@@ -91,9 +91,9 @@ func main() {
 						}
 						modelParam.Fields = fields
 						if methodVal.RequestModelName == val.Name {
-							codegen.GenerateFromTemplate(node.REQUEST_CLASS_TEMPLATE, "./frontend/"+frontendModelFile+".ts", modelParam)
+							codegen.GenerateFromStringTemplate(node.REQUEST_CLASS_TEMPLATE, "./frontend/"+frontendModelFile+".ts", modelParam)
 						} else {
-							codegen.GenerateFromTemplate(node.RESPONSE_INTERFACE_TEMPLATE, "./frontend/"+frontendModelFile+".ts", modelParam)
+							codegen.GenerateFromStringTemplate(node.RESPONSE_INTERFACE_TEMPLATE, "./frontend/"+frontendModelFile+".ts", modelParam)
 						}
 					}
 				}

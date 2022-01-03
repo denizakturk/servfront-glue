@@ -13,7 +13,17 @@ import (
 	"text/template"
 )
 
-func ParseTemplate(templatePath string) *template.Template {
+func ParseTemplateFromString(templatePath string) *template.Template {
+	tmpl := template.New(path.Base(templatePath))
+	tmpl.Funcs(GetTemplateFuncMap())
+	tmpl, tmplErr := tmpl.Parse(templatePath)
+	if nil != tmplErr {
+		fmt.Println(tmplErr)
+	}
+	return tmpl
+}
+
+func ParseTemplateFromFile(templatePath string) *template.Template {
 	tmpl := template.New(path.Base(templatePath))
 	tmpl.Funcs(GetTemplateFuncMap())
 	tmpl, tmplErr := tmpl.Parse(templatePath)
@@ -63,8 +73,16 @@ func GetTemplateFuncMap() template.FuncMap {
 	return funcMap
 }
 
-func GenerateFromTemplate(templatePath string, outputPath string, parameters interface{}) {
-	tmpl := ParseTemplate(templatePath)
+func GenerateFromStringTemplate(templateString string, outputPath string, parameters interface{}) {
+	tmpl := ParseTemplateFromString(templateString)
+
+	generateByteCode := ExecTemplate(tmpl, parameters)
+
+	OutputTemplate(outputPath, generateByteCode)
+}
+
+func GenerateFromFileTemplate(templatePath string, outputPath string, parameters interface{}) {
+	tmpl := ParseTemplateFromFile(templatePath)
 
 	generateByteCode := ExecTemplate(tmpl, parameters)
 
