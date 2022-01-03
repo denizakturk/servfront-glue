@@ -2,7 +2,8 @@ package main
 
 import (
 	"os"
-	"servfront-glue/codegen"
+
+	"github.com/denizakturk/servfront-glue/codegen"
 )
 
 func main() {

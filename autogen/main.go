@@ -7,9 +7,10 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"servfront-glue/autogen/model"
-	"servfront-glue/codegen"
-	"servfront-glue/template/backend/go/servfront"
+
+	"github.com/denizakturk/servfront-glue/autogen/model"
+	"github.com/denizakturk/servfront-glue/codegen"
+	"github.com/denizakturk/servfront-glue/template/backend/go/servfront"
 )
 
 const SCHEMA_FILENAME = "schame.json"
@@ -21,7 +22,7 @@ func main() {
 	fmt.Println("Running path from " + whereFromRunning)
 
 	if _, schemaFileErr := os.Stat(SCHEMA_FILE_PATH); errors.Is(schemaFileErr, os.ErrNotExist) {
-		panic(SCHEMA_FILENAME + " file not found, please before run github.com/servfront-glue/autogen/init")
+		panic(SCHEMA_FILENAME + " file not found, please before run github.com/denizakturk/servfront-glue/autogen/init")
 	}
 
 	schemaFile, err := os.Open(SCHEMA_FILE_PATH)

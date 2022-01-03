@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"os"
-	"servfront-glue/autogen/model"
+	"github.com/denizakturk/servfront-glue/autogen/model"
 )
 
 func main() {
