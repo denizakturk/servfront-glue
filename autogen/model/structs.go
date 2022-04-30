@@ -16,7 +16,7 @@ type ModelField struct {
 	Type string `json:"type"`
 }
 
-type AutogenInit struct {
+type Service struct {
 	PackageName    string            `json:"package_name"`
 	ControllerName string            `json:"controller_name"`
 	ControllerPath string            `json:"controller_path"`
@@ -26,3 +26,5 @@ type AutogenInit struct {
 	Method         []ControllerMetod `json:"method"`
 	Model          []Model           `json:"model"`
 }
+
+type Services map[string]Service

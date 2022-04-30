@@ -2,13 +2,15 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/denizakturk/servfront-glue/autogen/model"
 	"log"
 	"os"
-	"github.com/denizakturk/servfront-glue/autogen/model"
 )
 
 func main() {
-	autogenInit := &model.AutogenInit{
+	var services map[string]model.Service
+	services = make(map[string]model.Service)
+	services["ExampleService"] = model.Service{
 		PackageName:    "PackageNameHere",
 		ControllerName: "ControllerNameHere",
 		Model: []model.Model{
@@ -39,9 +41,10 @@ func main() {
 			},
 		},
 	}
+	autogenInit := services
 	jsonMarshal, jmErr := json.MarshalIndent(autogenInit, " ", "\t")
 	if nil != jmErr {
 		log.Println(jmErr)
 	}
-	os.WriteFile("./schame.json", jsonMarshal, os.ModePerm)
+	os.WriteFile("./schema.json", jsonMarshal, os.ModePerm)
 }
